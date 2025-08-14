@@ -1,9 +1,16 @@
 FROM python:3.9-slim
 
-# Install system dependencies including wkhtmltopdf
+# Install system dependencies and wkhtmltopdf 0.12.6
 RUN apt-get update && apt-get install -y \
-    wkhtmltopdf \
+    wget \
+    libfreetype6 \
+    libxrender1 \
+    libxext6 \
+    libjpeg62-turbo \
     xvfb \
+    && wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb \
+    && apt install -y ./wkhtmltox_0.12.6-1.bionic_amd64.deb \
+    && rm wkhtmltox_0.12.6-1.bionic_amd64.deb \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -30,7 +37,3 @@ RUN chmod +x /start.sh
 
 # Run the application
 CMD ["/start.sh"]
-
-
-
-
